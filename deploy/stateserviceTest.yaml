@@ -1,0 +1,10 @@
+apiVersion: cloudstate.io/v1alpha1
+kind: StatefulService
+metadata:
+  name: state-funtion-test
+spec:
+  containers:
+    - image: gryfit/test:0.2
+  ports:
+    - port: 8080
+    - port: 8090

@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+import "cloudstate/entity_key.proto";
+
+package wirelessmesh;
+
+option java_package = "wirelessmesh";
+
+message GetCommand {
+    string id = 1 [(.cloudstate.entity_key) = true];
+}
+
+message SetCommand {
+    string id = 1 [(.cloudstate.entity_key) = true];
+    string state = 2;
+}
+
+message State{
+    string state =1;
+}
+
+message Empty {
+}
+
+service TestService {
+    // One time activation of the router.
+    rpc GetState(GetCommand) returns (stream State);
+
+    // Assign the router to a location in the home.
+    rpc SetState(SetCommand) returns (stream Empty);
+}
