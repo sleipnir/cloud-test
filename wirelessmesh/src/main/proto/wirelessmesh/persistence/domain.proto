@@ -2,7 +2,6 @@ syntax = "proto3";
 
 package wirelessmesh.persistence;
 
-
 message StateSet {
     string id = 1;
     string state = 2;

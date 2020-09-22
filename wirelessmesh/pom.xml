@@ -15,7 +15,7 @@
     <dependencies>
         <dependency>
             <groupId>io.cloudstate</groupId>
-            <artifactId>cloudstate-java-support</artifactId>
+            <artifactId>cloudstate-springboot-support</artifactId>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
@@ -81,23 +81,42 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>io.fabric8</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>1.7.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <configuration>
-                    <skip>false</skip>
-                    <images>
-                        <image>
-                            <name>wirelessmesh.domain</name>
-                            <build>
-                                <entryPoint>
-                                    <arg>java</arg>
-                                    <arg>-cp</arg>
-                                    <arg>/maven/*</arg>
-                                    <arg>wirelessmesh.WirelessMeshSpringApplication</arg>
-                                </entryPoint>
-                            </build>
-                        </image>
-                    </images>
+                    <from>
+                        <image>adoptopenjdk/openjdk8-openj9:alpine-slim</image>
+                        <credHelper></credHelper>
+                    </from>
+                    <to>
+                        <!-- Use your docker repository here -->
+                        <image>sleipnir/wirelessmesh</image>
+                        <credHelper></credHelper>
+                        <tags>
+                            <tag>${project.version}</tag>
+                        </tags>
+                    </to>
+                    <container>
+                        <mainClass>${start-class}</mainClass>
+                        <jvmFlags>
+                            <jvmFlag>-XshareClasses</jvmFlag>
+                            <jvmFlag>-Xquickstart</jvmFlag>
+                            <jvmFlag>-XX:+UseG1GC</jvmFlag>
+                            <jvmFlag>-XX:+UseStringDeduplication</jvmFlag>
+                        </jvmFlags>
+                        <ports>
+                            <port>8080</port>
+                        </ports>
+                    </container>
                 </configuration>
             </plugin>
             <plugin>

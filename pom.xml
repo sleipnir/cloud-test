@@ -6,7 +6,6 @@
     <groupId>cloudstate.spring.wirelessmesh</groupId>
     <artifactId>cloudstate-spring-wirelessmesh</artifactId>
     <version>1.0-SNAPSHOT</version>
-
     <packaging>pom</packaging>
 
     <parent>
@@ -15,6 +14,23 @@
         <version>2.1.6.RELEASE</version>
         <relativePath />
     </parent>
+
+    <properties>
+        <version.number>0.1</version.number>
+        <cloudstate.version>0.5.2-SNAPSHOT</cloudstate.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <start-class>wirelessmesh.WirelessMeshSpringApplication</start-class>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.cloudstate</groupId>
+                <artifactId>cloudstate-springboot-support</artifactId>
+                <version>${cloudstate.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <modules>
         <module>wirelessmesh</module>
@@ -54,32 +70,19 @@
                     </executions>
                 </plugin>
                 <plugin>
-                    <groupId>io.fabric8</groupId>
-                    <artifactId>docker-maven-plugin</artifactId>
-                    <version>0.26.1</version>
-                    <configuration>
-                        <images>
-                            <image>
-                                <build>
-                                    <from>adoptopenjdk/openjdk8</from>
-                                    <tags>
-                                        <tag>${version.number}</tag>
-                                        <tag>latest</tag>
-                                    </tags>
-                                    <assembly>
-                                        <descriptorRef>artifact-with-dependencies</descriptorRef>
-                                    </assembly>
-                                </build>
-                            </image>
-                        </images>
-                    </configuration>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
                     <executions>
                         <execution>
-                            <id>build-docker-image</id>
-                            <phase>package</phase>
+                            <phase>generate-sources</phase>
                             <goals>
-                                <goal>build</goal>
+                                <goal>add-source</goal>
                             </goals>
+                            <configuration>
+                                <sources>
+                                    <source>${project.build.directory}/generated-sources/protobuf/java</source>
+                                </sources>
+                            </configuration>
                         </execution>
                     </executions>
                 </plugin>
@@ -95,13 +98,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>io.fabric8</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>pl.project13.maven</groupId>
@@ -124,20 +120,4 @@
         </plugins>
     </build>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>io.cloudstate</groupId>
-                <artifactId>cloudstate-java-support</artifactId>
-                <version>${cloudstate.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <cloudstate.version>0.4.3</cloudstate.version>
-        <version.number>0.1</version.number>
-        <start-class>wirelessmesh.WirelessMeshSpringApplication</start-class>
-    </properties>
 </project>

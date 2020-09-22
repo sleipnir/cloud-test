@@ -1,32 +1,30 @@
 package wirelessmesh.domain;
 
-import com.google.protobuf.Empty;
 import io.cloudstate.javasupport.EntityId;
 import io.cloudstate.javasupport.eventsourced.*;
-import io.cloudstate.javasupport.eventsourced.EventSourcedEntity;
-import wirelessmesh.*;
-import wirelessmesh.persistence.*;
+import io.cloudstate.springboot.starter.CloudstateContext;
+import io.cloudstate.springboot.starter.CloudstateEntityBean;
+import wirelessmesh.Deviceservice;
+import wirelessmesh.persistence.Domain;
 
 /**
  * This represents the domain entity that will be the digital twin of one or our wireless mesh devices. We model this as closely
  * as possible to the real world behavior of a router owned by one of our customers.
  */
 @EventSourcedEntity
+@CloudstateEntityBean
 public class TestEntity {
-    /**
-     * Unique identifier for this entity, also just happens to be the same as deviceId.
-     */
-    private final String id;
 
     private String state = "";
 
     /**
-     * Constructor.
-     * @param entityId The entity id will be the deviceId.
+     * Unique identifier for this entity, also just happens to be the same as deviceId.
      */
-    public TestEntity(@EntityId String entityId) {
-        this.id = entityId;
-    }
+    @EntityId
+    private String id;
+
+    @CloudstateContext
+    private EventSourcedContext context;
 
     @CommandHandler
     public Deviceservice.State getState(Deviceservice.GetCommand cmd, CommandContext ctx) {
