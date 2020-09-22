@@ -59,6 +59,7 @@
                     <artifactId>protobuf-maven-plugin</artifactId>
                     <version>0.6.1</version>
                     <configuration>
+                        <protocExecutable>/usr/local/bin/protoc</protocExecutable>
                         <protocArtifact>com.google.protobuf:protoc:3.9.1:exe:${os.detected.classifier}</protocArtifact>
                     </configuration>
                     <executions>
@@ -66,23 +67,6 @@
                             <goals>
                                 <goal>compile</goal>
                             </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>build-helper-maven-plugin</artifactId>
-                    <executions>
-                        <execution>
-                            <phase>generate-sources</phase>
-                            <goals>
-                                <goal>add-source</goal>
-                            </goals>
-                            <configuration>
-                                <sources>
-                                    <source>${project.build.directory}/generated-sources/protobuf/java</source>
-                                </sources>
-                            </configuration>
                         </execution>
                     </executions>
                 </plugin>
