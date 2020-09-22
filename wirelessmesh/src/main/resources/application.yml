@@ -1,0 +1,14 @@
+server:
+  port: 8090
+
+logging:
+  level:
+    root: INFO
+    org.springframework: INFO
+    io.cloudstate.springboot: INFO
+
+io:
+  cloudstate:
+    user-function-port: 8080
+    user-function-interface: "localhost"
+    user-function-package-name: "wirelessmesh"
